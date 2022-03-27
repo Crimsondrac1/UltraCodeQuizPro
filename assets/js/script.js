@@ -11,7 +11,7 @@ var questions = [{
     choices: ["JavaScript", "jQueryUI", "Moment.js", "Bootstrap"],
     correctAnswer: 0
 }, {
-    question: "What answer below would be the correct way to reference an element's ID in CSS",
+    question: "What answer below would be the correct way to reference an element's ID in CSS?",
     choices: ["-element", "#element", ".element", "$element"],
     correctAnswer: 1
 }, {
@@ -19,24 +19,24 @@ var questions = [{
     choices: ["8", "9", "10", "12"],
     correctAnswer: 3
 },{
-	question: "Which of the following are not jQuery Mouse events?",
+	question: "Which of the following is NOT a jQuery Mouse event?",
     choices: [".click()", ".cursor()", ".toggle()", "contextMenu()"],
     correctAnswer: 1
 },{
 	question: "What command would you use in Git to create a new branch?",
-    choices: ["git branch -b branchname", "git checkout -b branchname", "", "57"],
-    correctAnswer: 3
-},{
-	question: "8. Look at the following selector: $('div'). What does it select?",
-    choices: ["The first div element", "The last div element", "All div elements", "Current div element"],
-    correctAnswer: 2
-},{
-	question: "9. How can a value be appended to an array?",
-    choices: ["arr(length).value;", "arr[arr.length]=value;", "arr[]=add(value);", "None of these"],
+    choices: ["git branch -b branchname", "git checkout -b branchname", "git branch -d branchname", "git checkout branchname"],
     correctAnswer: 1
 },{
-	question: "10. What will the code below output to the console? console.log(1 +  +'2' + '2');",
-    choices: ["'32'", "'122'", "'13'", "'14'"],
+	question: "What is the name of the HTML file browsers attempt to load first when a new website is opened?",
+    choices: ["home.html", "active.html", "default.html", "index.html"],
+    correctAnswer: 3
+},{
+	question: "What special character is used to start a jQuery line?",
+    choices: ["#", "%", "$", "&"],
+    correctAnswer: 2
+},{
+	question: "What HTML attribute is used to add in Bootstrap settings?",
+    choices: ["class", "id", "style", "src"],
     correctAnswer: 0
 }];
 
@@ -46,8 +46,9 @@ var viewingAns = 0;
 var correctAnswers = 0;
 var quizOver = false;
 var iSelectedAnswer = [];
-	var clock=10;
-	var t;
+var clock=60;
+var timeout;
+
 $(document).ready(function () 
 {
     // Display the first question
@@ -76,7 +77,8 @@ $(document).ready(function ()
 				} 					
 		} else {
 			if(viewingAns == 3) { return false; }
-			currentQuestion = 0; viewingAns = 3;
+			currentQuestion = 0;
+            viewingAns = 3;
 			viewResults();		
 		}
     });
@@ -164,7 +166,7 @@ function timedCount()
 					$('#iTimeShow').html('You ran out of time! <br />');
 					$('#timer').html("You scored: " + correctAnswers + " out of: " + questions.length);
 					clock=185;
-					$(document).find(".preButton").text("View Answer");
+					$(document).find(".preButton").text("View Answers");
 					$(document).find(".nextButton").text("Play Again?");
 					quizOver = true;
 					return false;
@@ -173,7 +175,7 @@ function timedCount()
 		
 		
 		clock = clock - 1;
-		t = setTimeout(function()
+		timeout = setTimeout(function()
 		{
 			timedCount()
 		},1000);
@@ -256,18 +258,18 @@ function viewResults()
 		if(iSelectedAnswer[currentQuestion] == i) {
 			if(questions[currentQuestion].correctAnswer == i) {
 				// $('<li style="border:2px solid green;margin-top:10px;"><input type="radio" class="radio-inline" checked="checked"  value=' + i + ' name="dynradio" />' +  ' ' + choice  + '</li>').appendTo(choiceList);
-				$('<li style="border:2px solid green;margin-top:10px;"><input class="form-check-input w-50" type="radio" checked="checked" name="quizChoice" id="quizChoice1" value=' + i + ' /> <label class="form-check-label m-5 p-5" for="quizChoice1"> ' +  '  ' + choice  + '</label></li>').appendTo(choiceList);
+				$('<li style="border:2px solid green;margin-top:10px;"><input class="form-check-input w-50 radio-inline" type="radio" checked="checked" name="quizChoice" id="quizChoice1" value=' + i + ' /> <label class="form-check-label m-5 p-5" for="quizChoice1"> ' +  '  ' + choice  + '</label></li>').appendTo(choiceList);
 			} else {
 				// $('<li style="border:2px solid red;margin-top:10px;"><input type="radio" class="radio-inline" checked="checked"  value=' + i + ' name="dynradio" />' +  ' ' + choice  + '</li>').appendTo(choiceList);
-				$('<li style="border:2px solid red;margin-top:10px;"><input class="form-check-input w-50" type="radio" checked="checked" name="quizChoice" id="quizChoice1" value=' + i + ' /> <label class="form-check-label m-5 p-5" for="quizChoice1"> ' +  '  ' + choice  + '</label></li>').appendTo(choiceList);
+				$('<li style="border:2px solid red;margin-top:10px;"><input class="form-check-input w-50 radio-inline" type="radio" checked="checked" name="quizChoice" id="quizChoice1" value=' + i + ' /> <label class="form-check-label m-5 p-5" for="quizChoice1"> ' +  '  ' + choice  + '</label></li>').appendTo(choiceList);
 			}
 		} else {
 			if(questions[currentQuestion].correctAnswer == i) {
 				// $('<li style="border:2px solid green;margin-top:10px;"><input type="radio" class="radio-inline" value=' + i + ' name="dynradio" />' +  ' ' + choice  + '</li>').appendTo(choiceList);
-				$('<li style="border:2px solid green;margin-top:10px;"><input class="form-check-input" type="radio" name="quizChoice" id="quizChoice1" value=' + i + ' /> <label class="form-check-label" for="quizChoice1"> ' +  '  ' + choice  + '</label></li>').appendTo(choiceList);
+				$('<li style="border:2px solid green;margin-top:10px;"><input class="form-check-input radio-inline" type="radio" name="quizChoice" id="quizChoice1" value=' + i + ' /> <label class="form-check-label" for="quizChoice1"> ' +  '  ' + choice  + '</label></li>').appendTo(choiceList);
 			} else {
 				// $('<li><input type="radio" class="radio-inline" value=' + i + ' name="dynradio" />' +  ' ' + choice  + '</li>').appendTo(choiceList);
-				$('<li><input class="form-check-input" type="radio" name="quizChoice" id="quizChoice1" value=' + i + ' /> <label class="form-check-label" for="quizChoice1"> ' +  '  ' + choice  + '</label></li>').appendTo(choiceList);
+				$('<li><input class="form-check-input radio-inline" type="radio" name="quizChoice" id="quizChoice1" value=' + i + ' /> <label class="form-check-label" for="quizChoice1"> ' +  '  ' + choice  + '</label></li>').appendTo(choiceList);
 			}
 		}
     }
