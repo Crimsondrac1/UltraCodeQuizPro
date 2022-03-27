@@ -1,6 +1,6 @@
-var questions = [{
+var quizArray = [{
     question: "What company developed Bootstrap?",
-    choices: ["Microsoft", "Apple", "Twitter", "Facebook"],
+    choices: ["Microsoft", "Apple", "Twitter", "Facebook", "Jamba Juice"],
     correctAnswer: 2
 }, {
     question: "What does DOM stand for?",
@@ -54,28 +54,30 @@ $(document).ready(function ()
     // Display the first question
     displayCurrentQuestion();
     $(this).find(".quizMessage").hide();
-    $(this).find(".preButton").attr('disabled', 'disabled');
+    // $(this).find(".preButton").attr('disabled', 'disabled');
 	
 	timedCount();
 	
-	$(this).find(".preButton").on("click", function () 
+	$(this).find(".choices").on("click", function () 
 	{		
 		
         if (!quizOver) 
 		{
-			if(currentQuestion == 0) { return false; }
+			if(currentQuestion < 1) { 
+				return false; 
+			}
 	
-			if(currentQuestion == 1) {
-			  $(".preButton").attr('disabled', 'disabled');
+			if(currentQuestion > 0) {
+			//   $(".preButton").attr('disabled', 'disabled');
 			}
 			
 				currentQuestion--; // Since we have already displayed the first question on DOM ready
-				if (currentQuestion < questions.length) 
+				if (currentQuestion < quizArray.length) 
 				{
 					displayCurrentQuestion();
-					
 				} 					
-		} else {
+		}
+		 else {
 			if(viewingAns == 3) { return false; }
 			currentQuestion = 0;
             viewingAns = 3;
@@ -84,59 +86,63 @@ $(document).ready(function ()
     });
 
 	
-	// On clicking next, display the next question
-    $(this).find(".nextButton").on("click", function () 
+	// Selecting an answer should display the next question
+    $(this).find(".choices").on("click", function () 
 	{
         if (!quizOver) 
-		{
+		 { currentQuestion++; }
 			
-            var val = $("input[type='radio']:checked").val();
+        //     var val = $(".choices").val();
+		// 	console.log(val)
 
-            if (val == undefined) 
-			{
-                $(document).find(".quizMessage").text("Please select an answer");
-                $(document).find(".quizMessage").show();
-            } 
-			else 
-			{
-                // TODO: Remove any message -> not sure if this is efficient to call this each time....
-                $(document).find(".quizMessage").hide();
-				if (val == questions[currentQuestion].correctAnswer) 
-				{
-					correctAnswers++;
-				}
-				iSelectedAnswer[currentQuestion] = val;
+        //     // if (val == undefined) 
+		// 	// {
+        //     //     $(document).find(".quizMessage").text("Please select an answer");
+        //     //     $(document).find(".quizMessage").show();
+        //     // } 
+		// 	// else 
+		// 	// {
+        //         // TODO: Remove any message -> not sure if this is efficient to call this each time....
+        //         // $(document).find(".quizMessage").hide();
+		// 		if (val == quizArray[currentQuestion].correctAnswer) 
+		// 		{
+		// 			correctAnswers++;
+		// 		}
+		// 		// iSelectedAnswer[currentQuestion] = val;
 				
-				currentQuestion++; // Since we have already displayed the first question on DOM ready
-				if(currentQuestion >= 1) {
-					  $('.preButton').prop("disabled", false);
-				}
-				if (currentQuestion < questions.length) 
-				{
-					displayCurrentQuestion();
+		// 		currentQuestion++; // Since we have already displayed the first question on DOM ready
+		// 		// if(currentQuestion >= 1) {
+		// 		// 	//   $('.preButton').prop("disabled", false);
+		// 		// }
+		// 		if (currentQuestion < quizArray.length) 
+		// 		{
+		// 			displayCurrentQuestion();
 					
-				} 
-				else 
-				{
-					displayScore();
-					$('#iTimeShow').html('Quiz Time Completed!');
-					$('#timer').html("You scored: " + correctAnswers + " out of: " + questions.length);
-					clock=185;
-					$(document).find(".preButton").text("View Answer");
-					$(document).find(".nextButton").text("Play Again?");
-					quizOver = true;
-					return false;
 					
-				}
-			}
+		// 		} 
+				// else 
+				// {
+				// 	displayScore();
+				// 	$('#iTimeShow').html('Quiz Time Completed!');
+				// 	$('#timer').html("You scored: " + correctAnswers + " out of: " + quizArray.length);
+				// 	clock=60;
+				// 	$(document).find(".preButton").text("View Answer");
+				// 	$(document).find(".nextButton").text("Play Again?");
+				// 	quizOver = true;
+				// 	return false;
 					
-		}	
+				// }
+			// }
+					
+		// }	
 		else 
 		{ // quiz is over and clicked the next button (which now displays 'Play Again?'
-			quizOver = false; $('#iTimeShow').html('Time Remaining:'); iSelectedAnswer = [];
+			quizOver = false; 
+			$('#iTimeShow').html('Time Remaining:'); 
+			iSelectedAnswer = [];
 			$(document).find(".nextButton").text("Next Question");
 			$(document).find(".preButton").text("Previous Question");
-			 $(".preButton").attr('disabled', 'disabled');
+			$(".preButton").attr('disabled', 'disabled');
 			resetQuiz();
 			viewingAns = 1;
 			displayCurrentQuestion();
@@ -149,7 +155,7 @@ $(document).ready(function ()
 
 function timedCount()
 	{
-		if(clock == 185) 
+		if(clock == 60) 
 		{ 
 			return false; 
 		}
@@ -164,8 +170,10 @@ function timedCount()
 		{
 					displayScore();
 					$('#iTimeShow').html('You ran out of time! <br />');
-					$('#timer').html("You scored: " + correctAnswers + " out of: " + questions.length);
-					clock=185;
+					$('#timer').html("You scored: " + correctAnswers + " out of: " + quizArray.length);
+					clock=60;
+					$(document).find(".preButton").show();
+					$(document).find(".nextButton").show();
 					$(document).find(".preButton").text("View Answers");
 					$(document).find(".nextButton").text("Play Again?");
 					quizOver = true;
@@ -186,12 +194,12 @@ function timedCount()
 function displayCurrentQuestion() 
 {
 
-	if(clock == 185) { clock = 180; timedCount(); }
+	if(clock == 60) { clock = 60; timedCount(); }
     //console.log("In display current Question");
-    var question = questions[currentQuestion].question;
+    var question = quizArray[currentQuestion].question;
     var questionClass = $(document).find(".quizContainer > .question");
     var choiceList = $(document).find(".quizContainer > .choiceList");
-    var numChoices = questions[currentQuestion].choices.length;
+    var numChoices = quizArray[currentQuestion].choices.length;
     // Set the questionClass text to the current question
     $(questionClass).text(question);
     // Remove all current <li> elements (if any)
@@ -201,15 +209,46 @@ function displayCurrentQuestion()
 	
     for (i = 0; i < numChoices; i++) 
 	{
-        choice = questions[currentQuestion].choices[i];
+        choice = quizArray[currentQuestion].choices[i];
 		
 		if(iSelectedAnswer[currentQuestion] == i) {
 			// $('<li><input type="radio" class="radio-inline" checked="checked"  value=' + i + ' name="dynradio" />' +  ' ' + choice  + '</li>').appendTo(choiceList);
 			//$('<li><input class="form-check-input" type="radio" checked="checked" name="quizChoice" id="quizChoice1" value=' + i + ' name="dynradio" /> <label class="form-check-label " for="quizChoice1"> ' +  '  ' + choice  + '</li>').appendTo(choiceList);
-			$('<li class="w-50"><input class="form-check-input" type="radio" checked="checked" name="quizChoice" id="quizChoice1" value=' + i + ' /> <label class="form-check-label" for="quizChoice1"> ' +  '  ' + choice  + '</label></li>').appendTo(choiceList);
+			$('<li class="choices w-75" value=' + i + '>' + choice  + '</li>').appendTo(choiceList);
+			$(document).find(".preButton").hide();
+			$(document).find(".nextButton").hide();
+
+			// $('<li>').change(function() {
+			// 	var selectedAnswer = $("<li> option:selected").text();
+			// 	console.log(selectedAnswer);
+			// });
+
+			$(document).ready(function(){
+				$("li").click(function(){
+		   		Question++;
+					console.log($(this).text());
+				console.log(i)
+				
+
+				});
+			});
+
 		} else {
 			// $('<li><input type="radio" class="radio-inline" value=' + i + ' name="dynradio" />' +  ' ' + choice  + '</li>').appendTo(choiceList);
-            $('<li class="w-50"><input class="form-check-input" type="radio" name="quizChoice" id="quizChoice1" value=' + i + ' /> <label class="form-check-label" for="quizChoice1"> ' +  '  ' + choice  + '</label></li>').appendTo(choiceList);
+            $('<li class="choices w-75" value=' + i + '>' + choice  + '</label></li>').appendTo(choiceList);
+			$(document).find(".preButton").hide();
+			$(document).find(".nextButton").hide();
+			// $('<li>').change(function() {
+			// 	var selectedAnswer = $("<li> option:selected").text();
+			// 	console.log(selectedAnswer);
+			// });
+			$(document).ready(function(){
+				$("li").click(function(){
+		   		console.log($(this).text());
+				   console.log(i)
+				   
+				});
+			});
 		}
     }
 }
@@ -223,7 +262,7 @@ function resetQuiz()
 
 function displayScore()
 {
-    $(document).find(".quizContainer > .result").text("You scored: " + correctAnswers + " out of: " + questions.length);
+    $(document).find(".quizContainer > .result").text("You scored: " + correctAnswers + " out of: " + quizArray.length);
     $(document).find(".quizContainer > .result").show();
 }
 
@@ -240,10 +279,10 @@ function viewResults()
 	if(viewingAns == 1) { return false; }
 
 	hideScore();
-    var question = questions[currentQuestion].question;
+    var question = quizArray[currentQuestion].question;
     var questionClass = $(document).find(".quizContainer > .question");
     var choiceList = $(document).find(".quizContainer > .choiceList");
-    var numChoices = questions[currentQuestion].choices.length;
+    var numChoices = quizArray[currentQuestion].choices.length;
     // Set the questionClass text to the current question
     $(questionClass).text(question);
     // Remove all current <li> elements (if any)
@@ -253,10 +292,10 @@ function viewResults()
 	
 	for (i = 0; i < numChoices; i++) 
 	{
-        choice = questions[currentQuestion].choices[i];
+        choice = quizArray[currentQuestion].choices[i];
 		
 		if(iSelectedAnswer[currentQuestion] == i) {
-			if(questions[currentQuestion].correctAnswer == i) {
+			if(quizArray[currentQuestion].correctAnswer == i) {
 				// $('<li style="border:2px solid green;margin-top:10px;"><input type="radio" class="radio-inline" checked="checked"  value=' + i + ' name="dynradio" />' +  ' ' + choice  + '</li>').appendTo(choiceList);
 				$('<li style="border:2px solid green;margin-top:10px;"><input class="form-check-input w-50 radio-inline" type="radio" checked="checked" name="quizChoice" id="quizChoice1" value=' + i + ' /> <label class="form-check-label m-5 p-5" for="quizChoice1"> ' +  '  ' + choice  + '</label></li>').appendTo(choiceList);
 			} else {
@@ -264,7 +303,7 @@ function viewResults()
 				$('<li style="border:2px solid red;margin-top:10px;"><input class="form-check-input w-50 radio-inline" type="radio" checked="checked" name="quizChoice" id="quizChoice1" value=' + i + ' /> <label class="form-check-label m-5 p-5" for="quizChoice1"> ' +  '  ' + choice  + '</label></li>').appendTo(choiceList);
 			}
 		} else {
-			if(questions[currentQuestion].correctAnswer == i) {
+			if(quizArray[currentQuestion].correctAnswer == i) {
 				// $('<li style="border:2px solid green;margin-top:10px;"><input type="radio" class="radio-inline" value=' + i + ' name="dynradio" />' +  ' ' + choice  + '</li>').appendTo(choiceList);
 				$('<li style="border:2px solid green;margin-top:10px;"><input class="form-check-input radio-inline" type="radio" name="quizChoice" id="quizChoice1" value=' + i + ' /> <label class="form-check-label" for="quizChoice1"> ' +  '  ' + choice  + '</label></li>').appendTo(choiceList);
 			} else {
