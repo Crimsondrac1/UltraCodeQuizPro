@@ -63,11 +63,11 @@ $(document).ready(function ()
 		
         if (!quizOver) 
 		{
-			if(currentQuestion < 1) { 
+			if(currentQuestion == 0) { 
 				return false; 
 			}
 	
-			if(currentQuestion > 0) {
+			if(currentQuestion == 1) {
 			//   $(".preButton").attr('disabled', 'disabled');
 			}
 			
