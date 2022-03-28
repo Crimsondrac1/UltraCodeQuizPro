@@ -53,7 +53,7 @@ var timeout;
 $(document).ready(function () 
 {
     // Display the first question
-    displayCurrentQuestion();
+    // displayCurrentQuestion();
     $(this).find(".quizMessage").hide();
     // $(this).find(".preButton").attr('disabled', 'disabled');
 	
@@ -75,7 +75,7 @@ $(document).ready(function ()
 				currentQuestion--; // Since we have already displayed the first question on DOM ready
 				if (currentQuestion < quizArray.length) 
 				{
-					displayCurrentQuestion();
+					// displayCurrentQuestion();
 				} 					
 		}
 		 else {
@@ -195,12 +195,16 @@ function timedCount()
 function displayCurrentQuestion() 
 {
 
-	if(clock == 60) { clock = 60; timedCount(); }
-    //console.log("In display current Question");
+	if(clock == 65) { 
+        clock = 60; 
+        timedCount(); 
+    }
+    console.log("In display" + quizArray[currentQuestion].question);
     var question = quizArray[currentQuestion].question;
     var questionClass = $(document).find(".quizContainer > .question");
     var choiceList = $(document).find(".quizContainer > .choiceList");
     var numChoices = quizArray[currentQuestion].choices.length;
+    console.log("In display" + quizArray[currentQuestion].question);
     // Set the questionClass text to the current question
     $(questionClass).text(question);
     // Remove all current <li> elements (if any)
@@ -212,7 +216,7 @@ function displayCurrentQuestion()
 	{
         choice = quizArray[currentQuestion].choices[i];
 		
-		if(iSelectedAnswer[currentQuestion] == i) {
+		if(iSelectedAnswer[currentQuestion].question == i) {
 			// $('<li><input type="radio" class="radio-inline" checked="checked"  value=' + i + ' name="dynradio" />' +  ' ' + choice  + '</li>').appendTo(choiceList);
 			//$('<li><input class="form-check-input" type="radio" checked="checked" name="quizChoice" id="quizChoice1" value=' + i + ' name="dynradio" /> <label class="form-check-label " for="quizChoice1"> ' +  '  ' + choice  + '</li>').appendTo(choiceList);
 			$('<li class="choices w-75" value=' + i + '>' + choice  + '</li>').appendTo(choiceList);
@@ -224,17 +228,19 @@ function displayCurrentQuestion()
 			// 	console.log(selectedAnswer);
 			// });
 
-			$(document).ready(function(){
+			// $(document).ready(function(){
+         
 				$("li").click(function(){
-		   		Question++;
-					console.log($(this).text());
-				console.log(i)
+                currentQuestion++
+				console.log($(this).text());
+				console.log("this is it" + i)
 				
 
 				});
-			});
+			// });
 
-		} else {
+		} 
+        else {
 			// $('<li><input type="radio" class="radio-inline" value=' + i + ' name="dynradio" />' +  ' ' + choice  + '</li>').appendTo(choiceList);
             $('<li class="choices w-75" value=' + i + '>' + choice  + '</label></li>').appendTo(choiceList);
 			$(document).find(".preButton").hide();
@@ -246,7 +252,7 @@ function displayCurrentQuestion()
 			$(document).ready(function(){
 				$("li").click(function(){
 		   		console.log($(this).text());
-				   console.log(i)
+				   console.log("why")
 				   
 				});
 			});
